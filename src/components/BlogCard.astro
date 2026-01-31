@@ -29,7 +29,30 @@ const moodColorMap: Record<string, string> = {
     "deadline-night": "var(--color-mood-night)",
 };
 
-const accentColor = mood ? moodColorMap[mood] : "var(--color-primary)";
+// Generate a consistent color based on the category string
+const getCategoryColor = (cat: string) => {
+    const colors = [
+        "#3b82f6", // Blue
+        "#10b981", // Emerald
+        "#8b5cf6", // Violet
+        "#ec4899", // Pink
+        "#f97316", // Orange
+        "#0ea5e9", // Sky
+        "#e11d48", // Rose
+        "#14b8a6", // Teal
+    ];
+    let hash = 0;
+    for (let i = 0; i < cat.length; i++) {
+        hash = cat.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const index = Math.abs(hash) % colors.length;
+    return colors[index];
+};
+
+const badgeColor = category
+    ? getCategoryColor(category)
+    : "var(--color-primary)";
+const accentColor = badgeColor;
 const isExternal = href.startsWith("http");
 ---
 
@@ -43,7 +66,14 @@ const isExternal = href.startsWith("http");
         {
             image && (
                 <div class="card-image-wrapper">
-                    {category && <span class="category-badge">{category}</span>}
+                    {category && (
+                        <span
+                            class="category-badge"
+                            style={`background-color: ${badgeColor}`}
+                        >
+                            {category}
+                        </span>
+                    )}
                     <img
                         src={image}
                         alt={title}
@@ -59,7 +89,12 @@ const isExternal = href.startsWith("http");
                 <span class="card-date">{date}</span>
                 {
                     category && !image && (
-                        <span class="card-category">{category}</span>
+                        <span
+                            class="card-category"
+                            style={`color: ${badgeColor}`}
+                        >
+                            {category}
+                        </span>
                     )
                 }
             </div>
@@ -73,7 +108,9 @@ const isExternal = href.startsWith("http");
             </p>
 
             <div class="card-footer">
-                <span class="read-more">Read story &rarr;</span>
+                <span class="read-more" style={`color: ${badgeColor}`}
+                    >Read story &rarr;</span
+                >
             </div>
         </div>
     </article>
@@ -102,28 +139,27 @@ const isExternal = href.startsWith("http");
         position: absolute;
         top: 16px;
         right: 16px;
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        padding: 6px 14px;
+        /* background set inline */
+        color: white;
+        padding: 4px 12px;
         border-radius: 100px;
         font-size: 0.7rem;
         font-weight: 700;
-        color: var(--accentColor);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow:
+            0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
         z-index: 2;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.05em;
         transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .card:hover .category-badge {
-        background: var(--accentColor);
-        color: white;
-        border-color: transparent;
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        box-shadow:
+            0 10px 15px -3px rgba(0, 0, 0, 0.1),
+            0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
 
     /* Subtle border on hover */
