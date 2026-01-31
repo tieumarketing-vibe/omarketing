@@ -6,44 +6,66 @@
 /* CSS Variables / Design Tokens */
 :root {
   /* Palette: Slate (Neutral) + Indigo (Accent) */
-  --color-bg-page: #f8fafc;       /* Slate 50 */
-  --color-bg-card: #ffffff;       /* White */
-  --color-bg-subtle: #f1f5f9;     /* Slate 100 */
-  
-  --color-text-main: #0f172a;     /* Slate 900 */
-  --color-text-muted: #475569;    /* Slate 600 */
-  --color-text-light: #94a3b8;    /* Slate 400 */
+  --color-bg-page: #f8fafc;
+  /* Slate 50 */
+  --color-bg-card: #ffffff;
+  /* White */
+  --color-bg-subtle: #f1f5f9;
+  /* Slate 100 */
 
-  --color-primary: #6366f1;       /* Indigo 500 */
-  --color-primary-hover: #4f46e5; /* Indigo 600 */
-  --color-primary-light: #e0e7ff; /* Indigo 100 */
+  --color-text-main: #0f172a;
+  /* Slate 900 */
+  --color-text-muted: #334155;
+  /* Slate 700 - Darker for better contrast */
+  --color-text-light: #64748b;
+  /* Slate 500 - Darker for better contrast */
 
-  --color-border: #e2e8f0;        /* Slate 200 */
-  --color-border-hover: #cbd5e1;  /* Slate 300 */
+  --color-primary: #6366f1;
+  /* Indigo 500 */
+  --color-primary-hover: #4f46e5;
+  /* Indigo 600 */
+  --color-primary-light: #e0e7ff;
+  /* Indigo 100 */
+
+  --color-border: #e2e8f0;
+  /* Slate 200 */
+  --color-border-hover: #cbd5e1;
+  /* Slate 300 */
 
   /* Navigation specific */
   --nav-bg: rgba(255, 255, 255, 0.8);
   --nav-border: rgba(255, 255, 255, 0.3);
 
   /* Mood Colors (kept for compatibility but refined) */
-  --color-mood-coffee: #d97706;   /* Amber 600 */
-  --color-mood-bug: #ef4444;      /* Red 500 */
-  --color-mood-deploy: #10b981;   /* Emerald 500 */
-  --color-mood-night: #8b5cf6;    /* Violet 500 */
+  --color-mood-coffee: #d97706;
+  /* Amber 600 */
+  --color-mood-bug: #ef4444;
+  /* Red 500 */
+  --color-mood-deploy: #10b981;
+  /* Emerald 500 */
+  --color-mood-night: #8b5cf6;
+  /* Violet 500 */
 
   /* Typography */
-  --font-heading: 'Outfit', sans-serif;
+  --font-heading: 'Be Vietnam Pro', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Spacing */
-  --space-xs: 0.25rem;  /* 4px */
-  --space-sm: 0.5rem;   /* 8px */
-  --space-md: 1rem;     /* 16px */
-  --space-lg: 1.5rem;   /* 24px */
-  --space-xl: 2rem;     /* 32px */
-  --space-2xl: 3rem;    /* 48px */
-  --space-3xl: 5rem;    /* 80px */
+  --space-xs: 0.25rem;
+  /* 4px */
+  --space-sm: 0.5rem;
+  /* 8px */
+  --space-md: 1rem;
+  /* 16px */
+  --space-lg: 1.5rem;
+  /* 24px */
+  --space-xl: 2rem;
+  /* 32px */
+  --space-2xl: 3rem;
+  /* 48px */
+  --space-3xl: 5rem;
+  /* 80px */
 
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -64,23 +86,34 @@
 
 /* Dark Mode */
 [data-theme="dark"] {
-  --color-bg-page: #0f172a;     /* Slate 900 */
-  --color-bg-card: #1e293b;     /* Slate 800 */
-  --color-bg-subtle: #334155;   /* Slate 700 */
-  
-  --color-text-main: #f8fafc;   /* Slate 50 */
-  --color-text-muted: #cbd5e1;  /* Slate 300 */
-  --color-text-light: #64748b;  /* Slate 500 */
+  --color-bg-page: #0f172a;
+  /* Slate 900 */
+  --color-bg-card: #1e293b;
+  /* Slate 800 */
+  --color-bg-subtle: #334155;
+  /* Slate 700 */
 
-  --color-border: #334155;      /* Slate 700 */
-  --color-border-hover: #475569;/* Slate 600 */
+  --color-text-main: #f8fafc;
+  /* Slate 50 */
+  --color-text-muted: #cbd5e1;
+  /* Slate 300 */
+  --color-text-light: #64748b;
+  /* Slate 500 */
 
-  --nav-bg: rgba(30, 41, 59, 0.8); /* Slate 800 with opacity */
+  --color-border: #334155;
+  /* Slate 700 */
+  --color-border-hover: #475569;
+  /* Slate 600 */
+
+  --nav-bg: rgba(30, 41, 59, 0.8);
+  /* Slate 800 with opacity */
   --nav-border: rgba(255, 255, 255, 0.1);
 }
 
 /* Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -100,16 +133,31 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-text-main);
 }
 
-h1 { font-size: 3.5rem; letter-spacing: -0.02em; }
-h2 { font-size: 2.25rem; letter-spacing: -0.01em; }
-h3 { font-size: 1.5rem; }
+h1 {
+  font-size: 3.5rem;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 2.25rem;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
 
 p {
   margin-bottom: var(--space-md);
@@ -129,22 +177,42 @@ a {
   padding: 0 var(--space-lg);
 }
 
-.text-center { text-align: center; }
-.mt-xl { margin-top: var(--space-xl); }
+.text-center {
+  text-align: center;
+}
+
+.mt-xl {
+  margin-top: var(--space-xl);
+}
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in {
   animation: fadeIn 0.6s ease-out forwards;
 }
 
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
 
 /* Components */
 .btn-primary {
