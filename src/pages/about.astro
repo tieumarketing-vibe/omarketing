@@ -1,0 +1,305 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Tag from "../components/Tag.astro";
+
+const skills = [
+    { name: "Kinh Doanh", color: "blue" },
+    { name: "Lifestyle", color: "purple" },
+    { name: "Chạy Bộ", color: "green" },
+    { name: "Storytelling", color: "pink" },
+    { name: "Coffee", color: "orange" },
+];
+---
+
+<Layout title="Về Lynn - Lynn The Storyteller">
+    <main class="about-container">
+        <!-- Hero Profile -->
+        <section class="profile-header animate-fade-in">
+            <div class="profile-image-wrapper">
+                <img
+                    src="/images/profile.jpg"
+                    alt="Lynn The Storyteller"
+                    class="profile-image"
+                />
+            </div>
+            <h1 class="profile-name">Lynn The Storyteller</h1>
+            <p class="profile-title">
+                Digital Marketer &bull; Writer &bull; Coffee Lover
+            </p>
+
+            <div class="profile-tags">
+                {
+                    skills.map((skill) => (
+                        <Tag name={skill.name} color={skill.color} />
+                    ))
+                }
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <article class="about-content animate-fade-in delay-200">
+            <section class="content-block">
+                <h2>👋 Mình là Lynn, một người kể chuyện.</h2>
+                <p>
+                    Trong hành trình gần 10 năm viết lách của mình, mình đã tích
+                    lũy vốn liếng với một vài gia tài nhỏ bao gồm:
+                </p>
+                <ul class="story-list">
+                    <li>
+                        Bài PR, Facebook, KOL review cho hơn <strong
+                            >hai chục thương hiệu lớn</strong
+                        > quốc tế và Việt Nam.
+                    </li>
+                    <li>
+                        Tác giả thường xuyên của tạp chí Marketing <strong
+                            >GAM Book</strong
+                        >.
+                    </li>
+                    <li>
+                        Trưởng dự án chuyên mục Phụ nữ/Nhà báo/Phóng viên tại
+                        tạp chí <strong>Afamily.vn</strong> với hơn một trăm bài báo
+                        đa dạng chủ đề chỉ trong vòng 1 năm.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="content-block">
+                <h2>✨ Toán học & Văn chương</h2>
+                <p>
+                    Một sự thật thú vị nhỏ về mình, đó là ông ngoại mình là nhà
+                    thơ/nhà văn/nhạc sĩ, mẹ mình và các dì bên ngoại cũng là
+                    giáo viên dạy văn cấp 3, trong khi đó mình lại chọn theo học <strong
+                        >chuyên Toán</strong
+                    > suốt ba năm cấp 3.
+                </p>
+                <p>
+                    Sau khoảng thời gian dài học MBA, lên các vị trí cấp cao
+                    trong các công ty, mình chợt nhận ra niềm hạnh phúc ý nghĩa
+                    nhất mình tạo cho cộng đồng là ngòi bút, câu từ qua mỗi câu
+                    chuyện.
+                </p>
+                <blockquote class="quote">
+                    “Đừng mãi lý trí như nhà toán học, thi thoảng hãy mộng mơ
+                    như một nhà thơ.”
+                </blockquote>
+            </section>
+
+            <section class="content-block">
+                <h2>🌈 Tại sao là "Một Đôi Ba Tứ"?</h2>
+                <p>Đó là triết lý sống và phong cách viết của mình:</p>
+                <ul class="story-list">
+                    <li>
+                        <strong>Một:</strong> Một góc nhìn chân thực, độc bản.
+                    </li>
+                    <li>
+                        <strong>Đôi:</strong> Sự cân bằng giữa tư duy logic (Toán)
+                        và cảm xúc bay bổng (Văn).
+                    </li>
+                    <li>
+                        <strong>Ba:</strong> Ba yếu tố tạo nên một câu chuyện hay:
+                        <em
+                            >Insight sâu sắc - Cảm xúc chân thật - Giá trị lan
+                            tỏa</em
+                        >.
+                    </li>
+                    <li>
+                        <strong>Tứ:</strong> Bốn mùa viết lách, bền bỉ và đều đặn
+                        mỗi ngày.
+                    </li>
+                </ul>
+            </section>
+        </article>
+
+        <!-- Connect -->
+        <section class="connect-section animate-fade-in delay-300">
+            <h3>Kết nối với mình</h3>
+            <p>
+                Mình luôn sẵn sàng cho một buổi <span class="highlight"
+                    >coffee talk</span
+                > (online hoặc offline)!
+            </p>
+            <div class="social-links">
+                <a href="#" class="social-link">Facebook</a>
+                <a href="#" class="social-link">LinkedIn</a>
+                <a href="#" class="social-link">Github</a>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    .about-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-3xl) var(--space-md);
+    }
+
+    /* Profile Header */
+    .profile-header {
+        text-align: center;
+        margin-bottom: var(--space-3xl);
+    }
+
+    .profile-image-wrapper {
+        position: relative;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: var(--space-lg);
+    }
+
+    .profile-image {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        box-shadow: var(--shadow-xl);
+        transition: transform 0.3s ease;
+    }
+
+    .profile-image:hover {
+        transform: scale(1.05) rotate(2deg);
+    }
+
+    .profile-image-wrapper::after {
+        content: "";
+        position: absolute;
+        inset: -15px;
+        border-radius: 50%;
+        border: 2px dashed var(--color-primary-light);
+        animation: spin 25s linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .profile-name {
+        font-size: 2.5rem;
+        margin-bottom: var(--space-xs);
+        background: linear-gradient(to right, #8b5cf6, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .profile-title {
+        color: var(--color-text-light);
+        font-weight: 500;
+        margin-bottom: var(--space-lg);
+        font-family: var(--font-mono);
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.05em;
+    }
+
+    .profile-tags {
+        display: flex;
+        justify-content: center;
+        gap: var(--space-sm);
+        flex-wrap: wrap;
+    }
+
+    /* Content */
+    .about-content {
+        background: var(--color-bg-card);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--color-border);
+    }
+
+    .content-block {
+        margin-bottom: var(--space-2xl);
+    }
+
+    .content-block:last-child {
+        margin-bottom: 0;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+        margin-bottom: var(--space-lg);
+        color: var(--color-text-main);
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+    }
+
+    p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-md);
+    }
+
+    .story-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .story-list li {
+        margin-bottom: var(--space-md);
+        padding-left: var(--space-lg);
+        border-left: 3px solid var(--color-primary-light);
+        font-size: 1.05rem;
+        color: var(--color-text-muted);
+    }
+
+    .story-list strong {
+        color: var(--color-primary);
+    }
+
+    .quote {
+        border-left: 4px solid var(--color-primary);
+        padding-left: var(--space-lg);
+        margin: var(--space-xl) 0;
+        font-style: italic;
+        color: var(--color-text-main);
+        font-size: 1.2rem;
+        font-family: var(--font-heading);
+    }
+
+    /* Connect */
+    .connect-section {
+        margin-top: var(--space-3xl);
+        text-align: center;
+    }
+
+    .highlight {
+        color: var(--color-primary);
+        font-weight: 700;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: var(--space-lg);
+        margin-top: var(--space-lg);
+    }
+
+    .social-link {
+        color: var(--color-text-muted);
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s ease;
+    }
+
+    .social-link:hover {
+        color: var(--color-primary);
+        border-bottom-color: var(--color-primary);
+    }
+
+    @media (max-width: 768px) {
+        .about-content {
+            padding: var(--space-lg);
+        }
+
+        .profile-name {
+            font-size: 2rem;
+        }
+    }
+</style>
