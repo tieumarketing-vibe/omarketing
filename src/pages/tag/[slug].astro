@@ -1,0 +1,148 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import BlogCard from "../../components/BlogCard.astro";
+import {
+    getTags,
+    getPostsByTag,
+    stripHtml,
+    type WPTag,
+} from "../../lib/wordpress";
+
+export async function getStaticPaths() {
+    const tags = await getTags();
+    return tags.map((tag) => ({
+        params: { slug: tag.slug },
+        props: { tag },
+    }));
+}
+
+interface Props {
+    tag: WPTag;
+}
+
+const { tag } = Astro.props;
+const wpPosts = await getPostsByTag(tag.slug);
+
+const posts = wpPosts.map((post) => {
+    const date = new Date(post.date).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+    });
+
+    return {
+        title: post.title,
+        excerpt: stripHtml(post.excerpt),
+        date: date,
+        icon: "🏷️",
+        mood: "coffee-morning",
+        image: post.featured_image,
+        href: `/post/${post.slug}`,
+        category: Object.values(post.categories)[0]?.name,
+    };
+});
+---
+
+<Layout title={`Tag: ${tag.name} - Lynn The Storyteller`}>
+    <main>
+        <header class="tag-header">
+            <div class="container">
+                <span class="tag-label">Tag Archive</span>
+                <h1 class="tag-title">#{tag.name}</h1>
+                {
+                    tag.description && (
+                        <p class="tag-description">{tag.description}</p>
+                    )
+                }
+            </div>
+        </header>
+
+        <section class="posts-section">
+            <div class="container">
+                {
+                    posts.length > 0 ? (
+                        <div class="posts-grid animate-fade-in delay-200">
+                            {posts.map((post) => (
+                                <BlogCard {...post} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div class="empty-state animate-fade-in">
+                            <p>Chưa có bài viết nào gắn thẻ này.</p>
+                            <a href="/" class="btn-primary mt-md">
+                                Quay về trang chủ
+                            </a>
+                        </div>
+                    )
+                }
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    .tag-header {
+        padding: var(--space-3xl) 0 var(--space-2xl);
+        text-align: center;
+        background: linear-gradient(
+            to bottom,
+            var(--color-bg-subtle) 0%,
+            var(--color-bg-page) 100%
+        );
+        margin-bottom: var(--space-2xl);
+    }
+
+    .tag-label {
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        color: var(--color-primary);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: var(--space-md);
+        display: block;
+    }
+
+    .tag-title {
+        font-size: 3rem;
+        margin-bottom: var(--space-md);
+        color: var(--color-text-main);
+    }
+
+    .tag-description {
+        font-size: 1.125rem;
+        max-width: 600px;
+        margin: 0 auto;
+        color: var(--color-text-muted);
+        line-height: 1.6;
+    }
+
+    .posts-section {
+        padding-bottom: var(--space-3xl);
+    }
+
+    .posts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: var(--space-xl);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: var(--space-3xl) 0;
+        color: var(--color-text-muted);
+    }
+
+    .mt-md {
+        margin-top: var(--space-md);
+    }
+
+    @media (max-width: 768px) {
+        .tag-title {
+            font-size: 2rem;
+        }
+
+        .posts-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

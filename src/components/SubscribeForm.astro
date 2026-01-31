@@ -1,0 +1,251 @@
+---
+export interface Props {
+    formId?: string;
+}
+
+const { formId = "YOUR_CONVERTKIT_FORM_ID" } = Astro.props;
+---
+
+<div class="subscribe-card">
+    <div class="subscribe-content">
+        <h3>📬 Nhận thông báo bài viết mới</h3>
+        <p>
+            Những câu chuyện nhỏ, những chia sẻ chân thành sẽ được gửi tới bạn.
+        </p>
+
+        <div id="formContent">
+            <form
+                action={`https://app.convertkit.com/forms/${formId}/subscriptions`}
+                method="POST"
+                class="subscribe-form"
+                id="subscribeForm"
+            >
+                <div class="form-grid">
+                    <input
+                        type="email"
+                        name="email_address"
+                        placeholder="Email của bạn"
+                        required
+                        class="form-input"
+                    />
+                    <input
+                        type="text"
+                        name="first_name"
+                        placeholder="Tên (tùy chọn)"
+                        class="form-input"
+                    />
+                    <button type="submit" class="btn-primary">
+                        Đăng ký ngay
+                    </button>
+                </div>
+
+                <p class="form-hint">
+                    <small
+                        >✨ Mình không spam đâu, chỉ share khi có điều đáng chia
+                        sẻ thôi!</small
+                    >
+                </p>
+
+                <div
+                    id="formMessage"
+                    class="form-message"
+                    style="display: none;"
+                >
+                </div>
+            </form>
+        </div>
+
+        <!-- Success View (Hidden by default) -->
+        <div id="successView" class="success-view" style="display: none;">
+            <div class="success-icon">📩</div>
+            <h3>Gần xong rồi!</h3>
+            <p>
+                Một email xác nhận vừa được gửi tới hộp thư của bạn.<br />
+                Vui lòng kiểm tra (cả mục <strong>Spam</strong> hoặc <strong
+                    >Promotions</strong
+                >) và bấm vào nút <strong>Confirm</strong> để hoàn tất nhé.
+            </p>
+            <button id="resetForm" class="btn-text">
+                ← Quay lại form đăng ký
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .subscribe-card {
+        background: var(--color-bg-card);
+        border-radius: var(--radius-xl);
+        padding: var(--space-2xl);
+        text-align: center;
+        border: 1px solid var(--color-border);
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s ease;
+    }
+
+    .subscribe-content h3 {
+        margin-bottom: var(--space-sm);
+        color: var(--color-text-main);
+    }
+
+    .subscribe-content p {
+        color: var(--color-text-muted);
+        margin-bottom: var(--space-xl);
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-md);
+        margin-bottom: var(--space-md);
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        background: var(--color-bg-page);
+        color: var(--color-text-main);
+        font-family: var(--font-body);
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-light);
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        background-color: var(--color-primary);
+        color: white;
+        font-weight: 600;
+        border: none;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--color-primary-hover);
+        transform: translateY(-1px);
+    }
+
+    .form-hint {
+        color: var(--color-text-light);
+        margin-top: var(--space-md);
+    }
+
+    .form-message {
+        margin-top: var(--space-lg);
+        padding: var(--space-md);
+        border-radius: var(--radius-md);
+        font-size: 0.875rem;
+    }
+
+    .form-message.success {
+        background: #dcfce7;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+    }
+
+    .form-message.error {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+    }
+
+    /* Success View Styles */
+    .success-view {
+        animation: fadeIn 0.5s ease;
+    }
+
+    .success-icon {
+        font-size: 3rem;
+        margin-bottom: var(--space-md);
+        animation: bounce 1s infinite;
+    }
+
+    .btn-text {
+        background: none;
+        border: none;
+        color: var(--color-primary);
+        text-decoration: underline;
+        cursor: pointer;
+        margin-top: var(--space-md);
+        font-size: 0.9rem;
+    }
+
+    @keyframes bounce {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+</style>
+
+<script>
+    const form = document.getElementById("subscribeForm") as HTMLFormElement;
+    const formContent = document.getElementById("formContent");
+    const successView = document.getElementById("successView");
+    const message = document.getElementById("formMessage");
+    const resetBtn = document.getElementById("resetForm");
+
+    form?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const url = form.action;
+
+        // Disable button to prevent double submit
+        const btn = form.querySelector("button");
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = "Đang gửi...";
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                body: formData,
+            });
+
+            if (response.ok || response.type === "opaque") {
+                // Show Success View
+                if (formContent && successView) {
+                    formContent.style.display = "none";
+                    successView.style.display = "block";
+                }
+                form.reset();
+            } else {
+                throw new Error("Form submission failed");
+            }
+        } catch (error) {
+            if (message) {
+                console.error(error);
+                message.textContent = "❌ Ối, có lỗi rồi! Thử lại sau nhé.";
+                message.className = "form-message error";
+                message.style.display = "block";
+            }
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = "Đăng ký ngay";
+            }
+        }
+    });
+
+    resetBtn?.addEventListener("click", () => {
+        if (formContent && successView) {
+            successView.style.display = "none";
+            formContent.style.display = "block";
+            if (message) message.style.display = "none";
+        }
+    });
+</script>

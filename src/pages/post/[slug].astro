@@ -1,0 +1,455 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getPosts, type WPPost, stripHtml } from "../../lib/wordpress";
+import BlogCard from "../../components/BlogCard.astro";
+
+export async function getStaticPaths() {
+    const posts = await getPosts();
+    return posts.map((post) => {
+        const relatedPosts = posts
+            .filter((p) => p.ID !== post.ID)
+            .filter((p) => {
+                const postCats = Object.keys(post.categories);
+                const pCats = Object.keys(p.categories);
+                return postCats.some((cat) => pCats.includes(cat));
+            })
+            .slice(0, 3);
+
+        if (relatedPosts.length < 3) {
+            const remaining = 3 - relatedPosts.length;
+            const recent = posts
+                .filter((p) => p.ID !== post.ID && !relatedPosts.includes(p))
+                .slice(0, remaining);
+            relatedPosts.push(...recent);
+        }
+
+        return {
+            params: { slug: post.slug },
+            props: { post, relatedPosts },
+        };
+    });
+}
+
+interface Props {
+    post: WPPost;
+    relatedPosts: WPPost[];
+}
+
+const { post, relatedPosts } = Astro.props;
+
+const date = new Date(post.date).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+});
+---
+
+<Layout title={post.title}>
+    <main class="post-container">
+        <article class="post-content">
+            <header class="post-header">
+                <a href="/" class="back-link">← Back to Blog</a>
+                <div class="post-meta">
+                    <span class="post-date">{date}</span>
+                    {
+                        Object.values(post.categories)[0] && (
+                            <span class="post-category">
+                                {Object.values(post.categories)[0].name}
+                            </span>
+                        )
+                    }
+                </div>
+                <h1 class="post-title" set:html={post.title} />
+            </header>
+
+            {
+                post.featured_image && (
+                    <div class="featured-image">
+                        <img src={post.featured_image} alt={post.title} />
+                    </div>
+                )
+            }
+
+            <div class="content" set:html={post.content} />
+
+            <div class="post-footer">
+                {
+                    post.tags && Object.keys(post.tags).length > 0 && (
+                        <div class="post-tags">
+                            {Object.values(post.tags).map((tag) => (
+                                <a href={`/tag/${tag.slug}`} class="tag">
+                                    #{tag.name}
+                                </a>
+                            ))}
+                        </div>
+                    )
+                }
+
+                <div class="share-buttons">
+                    <span class="share-label">Share this story:</span>
+                    <div class="share-links">
+                        <a
+                            href={`https://www.facebook.com/sharer/sharer.php?u=${Astro.url}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="share-link facebook"
+                            aria-label="Share on Facebook"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path
+                                    d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                                ></path></svg
+                            >
+                        </a>
+                        <a
+                            href={`https://twitter.com/intent/tweet?text=${post.title}&url=${Astro.url}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="share-link twitter"
+                            aria-label="Share on Twitter"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path
+                                    d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"
+                                ></path></svg
+                            >
+                        </a>
+                        <a
+                            href={`https://www.linkedin.com/shareArticle?mini=true&url=${Astro.url}&title=${post.title}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="share-link linkedin"
+                            aria-label="Share on LinkedIn"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path
+                                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                                ></path><rect x="2" y="9" width="4" height="12"
+                                ></rect><circle cx="4" cy="4" r="2"
+                                ></circle></svg
+                            >
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    {
+        relatedPosts.length > 0 && (
+            <section class="related-posts">
+                <div class="related-container">
+                    <h2 class="related-title">Bài viết liên quan</h2>
+                    <div class="related-grid">
+                        {relatedPosts.map((post) => (
+                            <BlogCard
+                                title={post.title}
+                                excerpt={stripHtml(post.excerpt)}
+                                date={new Date(post.date).toLocaleDateString(
+                                    "en-GB",
+                                    {
+                                        day: "numeric",
+                                        month: "short",
+                                        year: "numeric",
+                                    },
+                                )}
+                                category={
+                                    Object.values(post.categories)[0]?.name
+                                }
+                                image={post.featured_image}
+                                href={`/post/${post.slug}`}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </section>
+        )
+    }
+</Layout>
+
+<style>
+    .post-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--space-3xl) var(--space-md);
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-bottom: var(--space-xl);
+        color: var(--color-text-light);
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .back-link:hover {
+        color: var(--color-primary);
+    }
+
+    .post-header {
+        margin-bottom: var(--space-2xl);
+        text-align: center;
+    }
+
+    .post-meta {
+        display: flex;
+        justify-content: center;
+        gap: var(--space-md);
+        margin-bottom: var(--space-md);
+        color: var(--color-text-light);
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .post-title {
+        font-size: 2.5rem;
+        line-height: 1.2;
+        color: var(--color-text-main);
+    }
+
+    .featured-image {
+        margin-bottom: var(--space-2xl);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .featured-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .content {
+        font-size: 1.125rem;
+        line-height: 1.8;
+        color: var(--color-text-main);
+    }
+
+    /* Typography for WP Content */
+    .content :global(h2) {
+        font-size: 1.75rem;
+        margin-top: var(--space-2xl);
+        margin-bottom: var(--space-md);
+        color: var(--color-text-main);
+    }
+
+    .content :global(h3) {
+        font-size: 1.5rem;
+        margin-top: var(--space-xl);
+        margin-bottom: var(--space-sm);
+        color: var(--color-text-main);
+    }
+
+    .content :global(p) {
+        margin-bottom: var(--space-lg);
+    }
+
+    .content :global(a) {
+        color: var(--color-primary);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+    .content :global(ul),
+    .content :global(ol) {
+        margin-bottom: var(--space-lg);
+        padding-left: var(--space-xl);
+    }
+
+    .content :global(li) {
+        margin-bottom: var(--space-xs);
+    }
+
+    .content :global(blockquote) {
+        border-left: 4px solid var(--color-primary);
+        padding-left: var(--space-lg);
+        margin: var(--space-xl) 0;
+        font-style: italic;
+        color: var(--color-text-light);
+    }
+
+    .content :global(img) {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        margin: var(--space-lg) 0;
+    }
+
+    .content :global(figure) {
+        margin: var(--space-lg) 0;
+    }
+
+    .content :global(figcaption) {
+        text-align: center;
+        font-size: 0.875rem;
+        color: var(--color-text-light);
+        margin-top: var(--space-xs);
+    }
+
+    @media (max-width: 768px) {
+        .post-title {
+            font-size: 2rem;
+        }
+
+        .related-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Related Posts */
+    .related-posts {
+        background-color: var(--color-bg-subtle);
+        padding: var(--space-3xl) 0;
+        margin-top: var(--space-3xl);
+    }
+
+    .related-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 var(--space-md);
+    }
+
+    .related-title {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: var(--space-2xl);
+        color: var(--color-text-main);
+    }
+
+    .related-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-xl);
+    }
+    /* Post Footer (Tags + Share) */
+    .post-footer {
+        margin-top: var(--space-3xl);
+        padding-top: var(--space-xl);
+        border-top: 1px solid var(--color-border);
+    }
+
+    .post-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+        margin-bottom: var(--space-xl);
+    }
+
+    .tag {
+        background: var(--color-bg-subtle);
+        color: var(--color-text-muted);
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-md);
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: 1px solid var(--color-border);
+    }
+
+    .tag:hover {
+        background: var(--color-primary-light);
+        color: var(--color-primary);
+        border-color: var(--color-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .share-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--space-lg);
+        background: var(--color-bg-subtle);
+        border-radius: var(--radius-lg);
+        flex-wrap: wrap;
+        gap: var(--space-md);
+    }
+
+    .share-label {
+        font-weight: 700;
+        color: var(--color-text-main);
+        font-size: 1rem;
+        font-family: var(--font-heading);
+    }
+
+    .share-links {
+        display: flex;
+        gap: var(--space-md);
+    }
+
+    .share-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: white;
+        color: var(--color-text-muted);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .share-link:hover {
+        transform: translateY(-4px) scale(1.1);
+        color: white;
+        box-shadow: var(--shadow-md);
+        border-color: transparent;
+    }
+
+    .share-link.facebook {
+        color: #1877f2;
+    }
+    .share-link.facebook:hover {
+        background: #1877f2;
+        color: white;
+    }
+
+    .share-link.twitter {
+        color: #1da1f2;
+    }
+    .share-link.twitter:hover {
+        background: #1da1f2;
+        color: white;
+    }
+
+    .share-link.linkedin {
+        color: #0a66c2;
+    }
+    .share-link.linkedin:hover {
+        background: #0a66c2;
+        color: white;
+    }
+</style>

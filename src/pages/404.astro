@@ -1,0 +1,67 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="404 - Trang không tìm thấy">
+    <div class="error-page">
+        <div class="container">
+            <span class="error-emoji">☕</span>
+            <h1 class="error-title">Ủa, trang này đi đâu rồi?</h1>
+            <p class="error-message">
+                Chắc đang đi pha cà phê, quay lại sau nhé 😊
+                <br />
+                <small style="opacity: 0.6;"
+                    >Hoặc có thể mình đang fix bug mà quên mất...</small
+                >
+            </p>
+
+            <div
+                style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap; margin-top: var(--space-2xl);"
+            >
+                <a href="/" class="btn-submit"> 🏠 Về trang chủ </a>
+            </div>
+
+            <div
+                style="margin-top: var(--space-3xl); padding: var(--space-xl); background: var(--color-bg-secondary); border-radius: var(--radius-lg); max-width: 500px; margin-left: auto; margin-right: auto;"
+            >
+                <p
+                    style="font-size: var(--text-sm); color: var(--color-text-secondary); margin: 0;"
+                >
+                    💡 <strong>Dev tip:</strong> Lỗi 404 này cũng giống như khi bạn
+                    tìm semicolon trong code JavaScript vậy... nó không tồn tại nhưng
+                    bạn vẫn cứ tìm.
+                </p>
+            </div>
+
+            <div class="coffee-loader" style="margin-top: var(--space-3xl);">
+                <div class="coffee-cup"></div>
+                <div class="coffee-drip"></div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .btn-submit {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-xs);
+        padding: var(--space-md) var(--space-xl);
+        background: var(--color-coffee);
+        color: white;
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: var(--text-base);
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all var(--transition-fast);
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+        opacity: 0.9;
+        border-bottom: none;
+    }
+</style>

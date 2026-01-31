@@ -1,0 +1,140 @@
+---
+import { getCategories } from "../lib/wordpress";
+
+const categories = await getCategories();
+
+const targetCategories = ["Một", "Đôi Nửa", "Ba Bích", "Tứ Bề"];
+
+const menuItems = [
+    ...targetCategories.map((name) => {
+        const cat = categories.find(
+            (c) => c.name.toLowerCase() === name.toLowerCase(),
+        );
+        return {
+            name: name,
+            href: cat ? `/category/${cat.slug}` : "#",
+            hasDropdown: true, // Assuming these might have subcategories or just for style
+        };
+    }),
+    { name: "Về Lynn", href: "/about", hasDropdown: true },
+    { name: "Trang chủ", href: "/", hasDropdown: false },
+];
+---
+
+<nav class="left-nav">
+    <div class="nav-container">
+        <ul class="nav-list">
+            {
+                menuItems.map((item) => (
+                    <li class="nav-item">
+                        <a href={item.href} class="nav-link">
+                            <span class="nav-text">{item.name}</span>
+                            {item.hasDropdown && (
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="dropdown-icon"
+                                >
+                                    <path d="m6 9 6 6 6-6" />
+                                </svg>
+                            )}
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</nav>
+
+<style>
+    .left-nav {
+        position: fixed;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100;
+        padding: var(--space-lg);
+        display: none; /* Hidden on mobile by default */
+    }
+
+    .nav-container {
+        background: var(--nav-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: var(--space-xl) var(--space-md);
+        border-radius: var(--radius-xl);
+        border: 1px solid var(--nav-border);
+        box-shadow:
+            0 4px 6px -1px rgba(0, 0, 0, 0.05),
+            0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-sm);
+        color: var(--color-text-muted);
+        text-decoration: none;
+        font-family: var(--font-heading);
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        position: relative;
+        white-space: nowrap;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        transform: rotate(180deg);
+        padding: var(--space-xs) 0;
+    }
+
+    /* Reset writing mode for normal horizontal text if preferred, 
+       but vertical is common for side navs. 
+       Let's stick to horizontal for readability based on the user image 
+       which shows horizontal text. 
+    */
+    .nav-link {
+        writing-mode: horizontal-tb;
+        transform: none;
+        flex-direction: row;
+    }
+
+    .nav-link:hover {
+        color: var(--color-primary);
+        transform: translateX(4px);
+    }
+
+    .dropdown-icon {
+        opacity: 0.5;
+        transition: transform 0.2s ease;
+    }
+
+    .nav-link:hover .dropdown-icon {
+        opacity: 1;
+        transform: rotate(-90deg); /* Point to submenu if we had one */
+    }
+
+    /* Active state styling could be added here based on current URL */
+
+    @media (min-width: 1280px) {
+        .left-nav {
+            display: block;
+        }
+    }
+</style>

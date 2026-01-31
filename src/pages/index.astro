@@ -1,11 +1,176 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import BlogCard from "../components/BlogCard.astro";
+import SubscribeForm from "../components/SubscribeForm.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { getPosts, stripHtml } from "../lib/wordpress";
+
+const wpPosts = await getPosts();
+
+const posts = wpPosts.map((post) => {
+	const date = new Date(post.date).toLocaleDateString("en-GB", {
+		day: "numeric",
+		month: "short",
+		year: "numeric",
+	});
+
+	// Try to find a category to use as a tag
+	const category = Object.values(post.categories)[0]?.name || "Blog";
+
+	return {
+		title: post.title,
+		excerpt: stripHtml(post.excerpt),
+		date: date,
+		icon: "📝", // Default icon
+		mood: "coffee-morning", // Default mood
+		image:
+			post.featured_image ||
+			"https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=800&q=80",
+		href: `/post/${post.slug}`,
+		category: category,
+	};
+});
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Lynn The Storyteller - Daily Dev Life">
+	<main>
+		<!-- Hero Section -->
+		<section class="hero">
+			<div class="container">
+				<div class="hero-content animate-fade-in">
+					<span class="hero-label">Một Đôi Ba Tứ</span>
+					<h1 class="hero-title">Lynn The Storyteller</h1>
+					<p class="hero-subtitle">
+						Chào bạn, mình là Lynn _ Người sẽ dẫn dắt bạn trong
+						những phút tới đây vào thế giới của những câu chuyện
+						Một, Đôi, Ba, Tứ.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Posts Grid -->
+		<section class="posts-section">
+			<div class="container">
+				<div class="posts-grid animate-fade-in delay-200">
+					{posts.map((post) => <BlogCard {...post} />)}
+				</div>
+			</div>
+		</section>
+
+		<!-- Subscribe -->
+		<section class="subscribe-section">
+			<div class="container">
+				<SubscribeForm />
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<footer class="footer">
+			<div class="container">
+				<p class="copyright">
+					© 2026 Lynn The Storyteller. Made with ☕ and code.
+				</p>
+				<!-- Removed admin links -->
+			</div>
+		</footer>
+	</main>
 </Layout>
+
+<style>
+	/* Hero */
+	.hero {
+		padding: var(--space-3xl) 0 var(--space-2xl);
+		text-align: center;
+	}
+
+	.hero-label {
+		font-family: var(--font-mono);
+		font-size: 0.875rem;
+		color: var(--color-primary);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		margin-bottom: var(--space-md);
+		display: block;
+	}
+
+	.hero-title {
+		margin-bottom: var(--space-lg);
+		background: linear-gradient(
+			to right,
+			#8b5cf6,
+			#ec4899,
+			#3b82f6,
+			#8b5cf6
+		);
+		background-size: 200% auto;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		animation: shine 3s linear infinite;
+	}
+
+	@keyframes shine {
+		to {
+			background-position: 200% center;
+		}
+	}
+
+	.hero-subtitle {
+		font-size: 1rem;
+		max-width: 600px;
+		margin: 0 auto;
+		line-height: 1.8;
+	}
+
+	/* Posts Grid */
+	.posts-section {
+		padding-bottom: var(--space-3xl);
+	}
+
+	.posts-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+		gap: var(--space-xl);
+	}
+
+	/* Subscribe */
+	.subscribe-section {
+		padding: var(--space-3xl) 0;
+		background-color: var(--color-bg-subtle);
+	}
+
+	/* Footer */
+	.footer {
+		padding: var(--space-2xl) 0;
+		border-top: 1px solid var(--color-border);
+		text-align: center;
+	}
+
+	.copyright {
+		font-size: 0.875rem;
+		color: var(--color-text-light);
+	}
+
+	.footer-links {
+		margin-top: var(--space-md);
+		display: flex;
+		justify-content: center;
+		gap: var(--space-lg);
+		font-size: 0.875rem;
+		color: var(--color-text-muted);
+	}
+
+	.footer-links a:hover {
+		color: var(--color-primary);
+	}
+
+	@media (max-width: 768px) {
+		.hero {
+			padding: var(--space-2xl) 0;
+		}
+
+		.posts-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

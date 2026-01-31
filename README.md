@@ -1,46 +1,150 @@
-# Astro Starter Kit: Basics
+# Lynn The Storyteller - Blog phong cách Notion ✨  
 
-```sh
-npm create astro@latest -- --template basics
+**Một. Đôi. Ba. Tứ.**
+
+Một trang blog đẹp mắt được thiết kế theo phong cách Notion, featuring nội dung từ blog Lynn The Storyteller - nơi chia sẻ những câu chuyện về khởi nghiệp, kinh doanh F&B, và phát triển bản thân.
+
+## 🎨 Tính năng
+
+- **Thiết kế Notion-style**: Giao diện sạch sẽ, hiện đại giống Notion
+- **Dark Mode**: Hỗ trợ chế độ tối/sáng tự động
+- **Responsive**: Hoạt động mượt mà trên mọi thiết bị
+- **Sidebar Navigation**: Điều hướng dễ dàng với sidebar có thể thu gọn
+- **Typography đẹp**: Sử dụng font system với cỡ chữ và khoảng cách hợp lý
+- **Smooth Animations**: Hiệu ứng mượt mà và tinh tế
+- **Component Blocks**: Callouts, quotes, code blocks, và nhiều hơn nữa
+
+## 🚀 Cách chạy
+
+1. **Cài đặt dependencies** (nếu chưa cài):
+```bash
+npm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+2. **Chạy development server**:
+```bash
+npm run dev
+```
 
-## 🚀 Project Structure
+3. **Mở trình duyệt** và truy cập:
+```
+http://localhost:4321/
+```
 
-Inside of your Astro project, you'll see the following folders and files:
+## 📁 Cấu trúc dự án
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
+```
+blog/
+├── src/
+│   ├── layouts/
+│   │   └── Layout.astro       # Layout chính
+│   ├── pages/
+│   │   └── index.astro        # Trang chủ blog
+│   └── styles/
+│       └── global.css         # Design system và styles
+├── public/                     # Static assets
 └── package.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## 🎨 Design System
 
-## 🧞 Commands
+### Colors
+- **Primary**: `#2383e2` (Blue)
+- **Secondary**: `#f7f6f3` (Light Gray)
+- **Text**: `#37352f` (Dark Gray)
+- **Accents**: Purple, Pink, Orange, Green
 
-All commands are run from the root of the project, from a terminal:
+### Typography
+- **Font**: System font stack (Apple, Segoe UI, etc.)
+- **Sizes**: 12px - 48px với scale hợp lý
+- **Line Height**: 1.5 - 1.8 cho nội dung
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+### Spacing
+- Sử dụng scale 4px, 8px, 16px, 24px, 32px, 48px, 64px
 
-## 👀 Want to learn more?
+## 🔧 Tùy chỉnh
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### Thay đổi màu sắc
+Mở `src/styles/global.css` và chỉnh sửa CSS variables:
+
+```css
+:root {
+  --color-accent-blue: #2383e2;
+  --color-accent-purple: #9065b0;
+  /* ... */
+}
+```
+
+### Thêm bài viết
+Chỉnh sửa `src/pages/index.astro` để thêm nội dung mới.
+
+### Sidebar Navigation
+Thêm/sửa các mục trong sidebar tại phần `<nav>` trong `index.astro`.
+
+## 🌟 Các thành phần có sẵn
+
+### Callout
+```html
+<div class="callout info">
+  <div class="callout-icon">💡</div>
+  <div class="callout-content">
+    <p>Nội dung của bạn</p>
+  </div>
+</div>
+```
+
+Types: `info`, `warning`, `success`
+
+### Quote
+```html
+<blockquote class="quote">
+  Trích dẫn của bạn
+</blockquote>
+```
+
+### Divider
+```html
+<hr class="divider">
+```
+
+### Code Block
+```html
+<pre><code>
+// Your code here
+</code></pre>
+```
+
+## 📱 Responsive Design
+
+- **Desktop**: Full sidebar + content
+- **Tablet**: Collapsible sidebar
+- **Mobile**: Hidden sidebar với menu toggle
+
+## 🎯 Shortcuts
+
+- `Ctrl + K`: Tìm kiếm (giữ cho tương lai)
+- Click icon theme: Toggle dark/light mode
+- Click menu icon (mobile): Mở/đóng sidebar
+
+## 📝 To-Do / Cải tiến
+
+- [ ] Thêm tính năng tìm kiếm
+- [ ] Tích hợp markdown/MDX cho blog posts
+- [ ] Thêm tags và categories
+- [ ] Pagination
+- [ ] RSS feed
+- [ ] Comments system
+- [ ] Reading time estimate
+- [ ] Table of contents
+
+## 🤝 Contribute
+
+Feel free to fork và tùy chỉnh theo nhu cầu của bạn!
+
+## 📄 License
+
+MIT License - Tự do sử dụng cho dự án cá nhân và thương mại.
+
+---
+
+**Tạo bởi Antigravity** với ❤️ và Astro
