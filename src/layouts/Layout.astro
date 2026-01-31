@@ -6,6 +6,7 @@ interface Props {
 const { title = "My Notion-Style Blog" } = Astro.props;
 import LeftNav from "../components/LeftNav.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import "../styles/global.css";
 ---
 
 <!doctype html>
@@ -23,7 +24,6 @@ import ThemeToggle from "../components/ThemeToggle.astro";
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
 			rel="stylesheet"
 		/>
-		<link rel="stylesheet" href="/src/styles/global.css" />
 	</head>
 	<body>
 		<LeftNav />
