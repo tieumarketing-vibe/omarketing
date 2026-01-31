@@ -316,13 +316,43 @@ const date = new Date(post.date).toLocaleDateString("en-GB", {
         margin-top: var(--space-xs);
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1100px) {
         .post-title {
             font-size: 2rem;
         }
 
+        .related-container {
+            padding: 0;
+            overflow: hidden;
+        }
+
         .related-grid {
-            grid-template-columns: 1fr;
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            padding-right: var(--space-xl); /* End padding */
+            margin: 0;
+        }
+
+        /* Hide scrollbar but keep functionality */
+        .related-grid::-webkit-scrollbar {
+            display: none;
+        }
+        .related-grid {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Target the direct children (BlogCard wrapper or passed component) */
+        .related-grid > :global(*) {
+            min-width: 280px;
+            max-width: 280px;
+            scroll-snap-align: start;
+            flex-shrink: 0;
         }
     }
 

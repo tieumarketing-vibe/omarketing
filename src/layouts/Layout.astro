@@ -6,6 +6,7 @@ interface Props {
 const { title = "My Notion-Style Blog" } = Astro.props;
 import LeftNav from "../components/LeftNav.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import FloralBackground from "../components/FloralBackground.astro";
 import "../styles/global.css";
 ---
 
@@ -13,9 +14,12 @@ import "../styles/global.css";
 <html lang="vi">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="A beautiful Notion-style blog" />
+		<meta
+			name="description"
+			content="Chào bạn, mình là Lynn _ Người sẽ dẫn dắt bạn trong những phút tới đây vào thế giới của những câu chuyện Một, Đôi, Ba, Tứ."
+		/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/jpeg" href="/images/profile.jpg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,6 +31,7 @@ import "../styles/global.css";
 	</head>
 	<body>
 		<LeftNav />
+		<FloralBackground />
 		<ThemeToggle />
 		<slot />
 	</body>

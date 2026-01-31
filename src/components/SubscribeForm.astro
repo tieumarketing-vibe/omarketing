@@ -14,12 +14,7 @@ const { formId = "YOUR_CONVERTKIT_FORM_ID" } = Astro.props;
         </p>
 
         <div id="formContent">
-            <form
-                action={`https://app.convertkit.com/forms/${formId}/subscriptions`}
-                method="POST"
-                class="subscribe-form"
-                id="subscribeForm"
-            >
+            <form class="subscribe-form" id="subscribeForm">
                 <div class="form-grid">
                     <input
                         type="email"
@@ -201,7 +196,7 @@ const { formId = "YOUR_CONVERTKIT_FORM_ID" } = Astro.props;
     form?.addEventListener("submit", async (e) => {
         e.preventDefault();
         const formData = new FormData(form);
-        const url = form.action;
+        const url = "/api/subscribe";
 
         // Disable button to prevent double submit
         const btn = form.querySelector("button");
