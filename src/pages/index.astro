@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import BlogCard from "../components/BlogCard.astro";
 import SubscribeForm from "../components/SubscribeForm.astro";
+import Hero from "../components/Hero.astro";
 
 import { getPosts, stripHtml } from "../lib/wordpress";
 
@@ -35,49 +36,7 @@ const posts = wpPosts.map((post) => {
 <Layout title="Lynn The Storyteller - Nghe Lynn kể chuyện mỗi ngày">
 	<main>
 		<!-- Hero Section -->
-		<section class="hero">
-			<div class="container">
-				<div class="hero-content animate-fade-in">
-					<div class="hero-profile">
-						<img
-							src="/images/profile.jpg"
-							alt="Lynn The Storyteller"
-							class="profile-image"
-							width="150"
-							height="150"
-						/>
-					</div>
-					<div class="hero-text">
-						<span class="hero-label">Một Đôi Ba Tứ</span>
-						<div class="title-wrapper">
-							<h1 class="hero-title">Lynn The Storyteller</h1>
-							<div class="plane-container">
-								<svg
-									viewBox="0 0 24 24"
-									class="paper-plane"
-									fill="currentColor"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M2 12L22 2L12 22L12 12L2 12Z"
-										stroke="none"></path>
-									<path
-										d="M12 12L22 2"
-										stroke="white"
-										stroke-width="1.5"
-										stroke-linecap="round"></path>
-								</svg>
-							</div>
-						</div>
-						<p class="hero-subtitle">
-							Chào bạn, mình là Lynn _ Người sẽ dẫn dắt bạn trong
-							những phút tới đây vào thế giới của những câu chuyện
-							Một, Đôi, Ba, Tứ.
-						</p>
-					</div>
-				</div>
-			</div>
-		</section>
+		<Hero />
 
 		<!-- Posts Grid -->
 		<section class="posts-section">
@@ -101,179 +60,12 @@ const posts = wpPosts.map((post) => {
 				<p class="copyright">
 					© 2026 Lynn The Storyteller. Made with ☕ and code.
 				</p>
-				<!-- Removed admin links -->
 			</div>
 		</footer>
 	</main>
 </Layout>
 
 <style>
-	/* Hero */
-	.hero {
-		padding: var(--space-3xl) 0 var(--space-2xl);
-		text-align: center;
-	}
-
-	.hero-content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: var(--space-lg);
-	}
-
-	.hero-profile {
-		position: relative;
-		display: inline-flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.profile-image {
-		width: 150px;
-		height: 150px;
-		border-radius: 50%;
-		object-fit: cover;
-		border: 4px solid white;
-		box-shadow: var(--shadow-xl);
-		transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-		display: block; /* Removes inline gap */
-	}
-
-	.profile-image:hover {
-		transform: scale(1.05) rotate(3deg);
-	}
-
-	/* Decorative ring (optional) */
-	.hero-profile::after {
-		content: "";
-		position: absolute;
-		/* Increase spacing slightly to avoid touching the shadow/border */
-		inset: -12px;
-		border-radius: 50%;
-		border: 2px dashed var(--color-primary-light);
-		animation: spin 20s linear infinite;
-		pointer-events: none;
-	}
-
-	@keyframes spin {
-		to {
-			transform: rotate(360deg);
-		}
-	}
-
-	.hero-label {
-		font-family: var(--font-mono);
-		font-size: 0.875rem;
-		color: var(--color-primary);
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		margin-bottom: var(--space-md);
-		display: block;
-	}
-
-	.hero-title {
-		margin-bottom: var(--space-lg);
-		background: linear-gradient(
-			to right,
-			#8b5cf6,
-			#ec4899,
-			#3b82f6,
-			#8b5cf6
-		);
-		background-size: 200% auto;
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		animation: shine 3s linear infinite;
-	}
-
-	@keyframes shine {
-		to {
-			background-position: 200% center;
-		}
-	}
-
-	/* Title & Plane Animation */
-	.title-wrapper {
-		position: relative;
-		display: inline-block;
-	}
-
-	.plane-container {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		width: 120%;
-		height: 150%;
-		transform: translate(-50%, -50%); /* Centered on title */
-		pointer-events: none;
-	}
-
-	.paper-plane {
-		width: 24px;
-		height: 24px;
-		color: var(--color-primary);
-		opacity: 0;
-		/* Use offset-path for motion along a path. 
-		   Path is roughly an oval/figure-8 around the text.
-		   Adjust values based on text size.
-		*/
-		offset-path: path(
-			"M-20,0 C-50,-30 80,-40 150,0 C220,40 350,30 380,0 C410,-30 350,-60 250,-50 C150,-40 50,-20 -20,0"
-		);
-		offset-distance: 0%;
-		animation: flyAround 8s infinite linear;
-	}
-
-	@media (max-width: 768px) {
-		.paper-plane {
-			/* Smaller path for mobile */
-			offset-path: path(
-				"M-10,0 C-30,-20 50,-30 150,0 C250,30 150,50 50,20 C-10,0 -30,-20 -10,0"
-			);
-		}
-	}
-
-	@keyframes flyAround {
-		0% {
-			offset-distance: 0%;
-			opacity: 1;
-			transform: scale(0.8);
-		}
-		20% {
-			opacity: 1;
-			transform: scale(1);
-		}
-		80% {
-			opacity: 1;
-			transform: scale(0.8);
-		}
-		100% {
-			offset-distance: 100%;
-			opacity: 0;
-			transform: scale(0.5);
-		}
-	}
-
-	.hero-subtitle {
-		font-size: 1rem;
-		max-width: 600px;
-		margin: 0 auto;
-		line-height: 1.8;
-	}
-
-	@media (min-width: 768px) {
-		.hero-content {
-			flex-direction: row;
-			text-align: left;
-			justify-content: center;
-			gap: var(--space-2xl);
-		}
-
-		.hero-subtitle {
-			margin: 0;
-		}
-	}
-
 	/* Posts Grid */
 	.posts-section {
 		padding-bottom: var(--space-3xl);
@@ -303,24 +95,7 @@ const posts = wpPosts.map((post) => {
 		color: var(--color-text-light);
 	}
 
-	.footer-links {
-		margin-top: var(--space-md);
-		display: flex;
-		justify-content: center;
-		gap: var(--space-lg);
-		font-size: 0.875rem;
-		color: var(--color-text-muted);
-	}
-
-	.footer-links a:hover {
-		color: var(--color-primary);
-	}
-
 	@media (max-width: 768px) {
-		.hero {
-			padding: var(--space-2xl) 0;
-		}
-
 		.posts-grid {
 			grid-template-columns: 1fr;
 		}

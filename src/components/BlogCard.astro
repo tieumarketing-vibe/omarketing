@@ -241,7 +241,8 @@ const isExternal = href.startsWith("http");
     /* Image Styles */
     .card-image-wrapper {
         width: 100%;
-        height: 200px;
+        aspect-ratio: auto; /* Use original image aspect ratio */
+        height: auto;
         overflow: hidden;
         position: relative;
     }
